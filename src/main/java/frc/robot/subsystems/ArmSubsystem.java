@@ -62,7 +62,7 @@ public class ArmSubsystem extends SubsystemBase {
       
         angleEncoder = new DutyCycleEncoder(new DigitalInput(Constants.ArmConstants.ArmAbsoluteActuator));
         m_encoderActuate = m_ArmMaster.getAlternateEncoder(AlternateEncoderType.kQuadrature, 4096);
-        // m_encoderActuate = m_ArmMaster.getEncoder();
+    
 
         resetEncoders();
 
