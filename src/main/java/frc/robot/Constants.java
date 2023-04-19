@@ -62,7 +62,7 @@ public final class Constants {
         /* These values are used by the drive falcon to ramp in open loop and closed loop driving.
          * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc */
         public static final double openLoopRamp = 0.25;
-        public static final double closedLoopRamp = 1;
+        public static final double closedLoopRamp = .35;
 
         /* Angle Motor PID Values */
         public static final double angleKP = chosenModule.angleKP;
@@ -153,20 +153,20 @@ public final class Constants {
         public static final int ArmExtenderID = 58;
         public static final int HandMotorID = 57;
 
-        public static final int ArmPCMForward = 1;
-        public static final int ArmPCMBackwards = 0;
+        public static final int ArmPCMForward = 11;
+        public static final int ArmPCMBackwards = 10;
 
         public static final int ArmAbsoluteActuator = 0;
 
 
 
-        public static final double AbsoluteArmOffset = 71d;
+        public static final double AbsoluteArmOffset = 65d;
   
     }
 
     public static final class HopConstants{   
-        public static final int HopPCMForward = 2;
-        public static final int HopPCMBackwards = 3;
+        public static final int HopPCMForward = 9;
+        public static final int HopPCMBackwards = 8;
 
 
     }
@@ -190,8 +190,8 @@ public final class Constants {
 
  
 
-    public static final Gains kArmGains = new Gains(0.00200, 0, 0.002, .000010/*156 */, 0, 1.0);
-    public static final Gains kArmGains1 = new Gains(0.000200, 0, .002, 0.000010/*156 */, 0, 1.0);
+    public static final Gains kArmGains = new Gains(0.000300, 0, 0.002, 0.000010/*156 */, 0, 1.0);
+    public static final Gains kArmGains1 = new Gains(0.000200, 0, 0.002, 0.000010/*156 */, 0, 1.0);
     public static final Gains kArmGains2 = new Gains(0, 0, 0, 0.0/*156 */, 0, 1.0);
     public static final Gains kArmGains3 = new Gains(0.000050, 0, 0.002, 0.000010/*156 */, 0, 1.0);
 

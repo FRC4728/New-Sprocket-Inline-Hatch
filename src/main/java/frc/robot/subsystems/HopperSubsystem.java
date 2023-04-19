@@ -13,7 +13,7 @@ public class HopperSubsystem extends SubsystemBase {
 
   public HopperSubsystem() {
 
-    m_doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+    m_doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
 
   }
 

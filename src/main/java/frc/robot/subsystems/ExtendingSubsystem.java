@@ -119,7 +119,7 @@ SmartDashboard.putNumber("AcmeScrewposition", m_encoderExtend.getPosition());
     }
 
     public void ExtendToGround() {
-        m_PIDControllerExtend.setReference(48.3, ControlType.kPosition);
+        m_PIDControllerExtend.setReference(48, ControlType.kPosition);
         // m_PIDControllerExtend.setReference(joystickButton6, ControlType.kDutyCycle);
     }
 

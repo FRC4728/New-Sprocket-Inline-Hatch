@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.FloatArraySerializer;
 import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -30,11 +31,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     public double kP, kI, kD, kFF, kArbFF;
 
-    
-    //  private PowerDistribution m_PDP = new PowerDistribution(0, ModuleType.kCTRE);
-    
-        
-    
+    // private PowerDistribution m_PDP = new PowerDistribution(0, ModuleType.kCTRE);
+
     private SparkMaxPIDController m_PIDControllerActuate;
 
     private RelativeEncoder m_encoderActuate;
@@ -44,36 +42,32 @@ public class ArmSubsystem extends SubsystemBase {
     public double maxVel, maxAcc;
 
     double processVariable;
-    
 
-    public ArmSubsystem() {  
-        //85 degrees and above degrees PID 
-     //   kP = 0.00020; 0.000075
-     //   kI = 0;
-     //   kD = 0.0025; 
-     //   kFF = 0.000100; 
-
-     
+    public ArmSubsystem() {
+        // 85 degrees and above degrees PID
+        // kP = 0.00020; 0.000075
+        // kI = 0;
+        // kD = 0.0025;
+        // kFF = 0.000100;
 
         kP = 0.000050;
         kI = 0;
         kD = 0.002;
         kFF = 0.000000;
-      
+
         angleEncoder = new DutyCycleEncoder(new DigitalInput(Constants.ArmConstants.ArmAbsoluteActuator));
         m_encoderActuate = m_ArmMaster.getAlternateEncoder(AlternateEncoderType.kQuadrature, 4096);
-    
 
         resetEncoders();
 
         new Thread(() -> {
-           try {
-               Thread.sleep(1500);
+            try {
+                Thread.sleep(1500);
                 resetToAbsolute();
 
-           } catch (Exception e) {
+            } catch (Exception e) {
             }
-       }).start();
+        }).start();
 
         m_ArmMaster.set(0);
         m_ArmFollower.set(0);
@@ -81,8 +75,8 @@ public class ArmSubsystem extends SubsystemBase {
         m_ArmMaster.restoreFactoryDefaults();
         m_ArmFollower.restoreFactoryDefaults();
 
-        m_ArmMaster.setInverted(true);
-        m_ArmFollower.setInverted(true);
+        m_ArmMaster.setInverted(false);
+        m_ArmFollower.setInverted(false);
 
         m_encoderActuate.setPositionConversionFactor(386.909091);
 
@@ -93,16 +87,13 @@ public class ArmSubsystem extends SubsystemBase {
 
         m_PIDControllerActuate.setFeedbackDevice(m_encoderActuate);
 
-
-
-        
         // set PID coefficients
-        //m_PIDControllerActuate.setP(kP);
-        //m_PIDControllerActuate.setI(kI);
-        //m_PIDControllerActuate.setD(kD);
-        //m_PIDControllerActuate.setIZone(kIz);
-        //m_PIDControllerActuate.setFF(kFF);
-    
+        // m_PIDControllerActuate.setP(kP);
+        // m_PIDControllerActuate.setI(kI);
+        // m_PIDControllerActuate.setD(kD);
+        // m_PIDControllerActuate.setIZone(kIz);
+        // m_PIDControllerActuate.setFF(kFF);
+
         // display PID coefficients on SmartDashboard
         SmartDashboard.putNumber("P Gain", kP);
         SmartDashboard.putNumber("I Gain", kI);
@@ -111,28 +102,26 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Arb Feed Forward", kArbFF);
 
         SmartDashboard.putNumber("Set Rotations", 0);
-       // m_PIDControllerActuate.setP(Constants.kArmGains.kP, 0);
-       // m_PIDControllerActuate.setI(Constants.kArmGains.kI, 0);
-       // m_PIDControllerActuate.setD(Constants.kArmGains.kD, 0);
-       // m_PIDControllerActuate.setFF(Constants.kArmGains.kF, 0);
+        // m_PIDControllerActuate.setP(Constants.kArmGains.kP, 0);
+        // m_PIDControllerActuate.setI(Constants.kArmGains.kI, 0);
+        // m_PIDControllerActuate.setD(Constants.kArmGains.kD, 0);
+        // m_PIDControllerActuate.setFF(Constants.kArmGains.kF, 0);
 
-       m_PIDControllerActuate.setP(Constants.kArmGains.kP, 0);
-       m_PIDControllerActuate.setI(Constants.kArmGains.kI, 0);
-       m_PIDControllerActuate.setD(Constants.kArmGains.kD, 0);
-       m_PIDControllerActuate.setFF(Constants.kArmGains.kF, 0);
+        m_PIDControllerActuate.setP(Constants.kArmGains.kP, 0);
+        m_PIDControllerActuate.setI(Constants.kArmGains.kI, 0);
+        m_PIDControllerActuate.setD(Constants.kArmGains.kD, 0);
+        m_PIDControllerActuate.setFF(Constants.kArmGains.kF, 0);
 
         m_PIDControllerActuate.setP(Constants.kArmGains1.kP, 1);
         m_PIDControllerActuate.setI(Constants.kArmGains1.kI, 1);
         m_PIDControllerActuate.setD(Constants.kArmGains1.kD, 1);
         m_PIDControllerActuate.setFF(Constants.kArmGains1.kF, 1);
 
-        
         m_PIDControllerActuate.setP(Constants.kArmGains2.kP, 2);
         m_PIDControllerActuate.setI(Constants.kArmGains2.kI, 2);
         m_PIDControllerActuate.setD(Constants.kArmGains2.kD, 2);
         m_PIDControllerActuate.setFF(Constants.kArmGains2.kF, 2);
 
-                
         m_PIDControllerActuate.setP(Constants.kArmGains3.kP, 3);
         m_PIDControllerActuate.setI(Constants.kArmGains3.kI, 3);
         m_PIDControllerActuate.setD(Constants.kArmGains3.kD, 3);
@@ -164,10 +153,10 @@ public class ArmSubsystem extends SubsystemBase {
         m_PIDControllerActuate.setSmartMotionAllowedClosedLoopError(.1, 3);
 
         m_ArmFollower.follow(m_ArmMaster, false);
-       
+
         m_ArmMaster.setSmartCurrentLimit(30);
         m_ArmFollower.setSmartCurrentLimit(30);
-    
+
         m_ArmMaster.burnFlash();
         m_ArmFollower.burnFlash();
 
@@ -175,83 +164,68 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-      SmartDashboard.putNumber("Arm position",  m_encoderActuate.getPosition());
+        SmartDashboard.putNumber("Arm position", m_encoderActuate.getPosition());
 
-       // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("P Gain", 0);
-    double i = SmartDashboard.getNumber("I Gain", 0);
-    double d = SmartDashboard.getNumber("D Gain", 0);
-    double iz = SmartDashboard.getNumber("I Zone", 0);
-    double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    //double ArbFF = SmartDashboard.getNumber("Arb Feed Forward", 0);
+        // read PID coefficients from SmartDashboard
+        double p = SmartDashboard.getNumber("P Gain", 0);
+        double i = SmartDashboard.getNumber("I Gain", 0);
+        double d = SmartDashboard.getNumber("D Gain", 0);
+        double iz = SmartDashboard.getNumber("I Zone", 0);
+        double ff = SmartDashboard.getNumber("Feed Forward", 0);
+        // double ArbFF = SmartDashboard.getNumber("Arb Feed Forward", 0);
 
-    // if PID coefficients on SmartDashboard have changed, write new values to controller
-   // if((p != kP)) { m_PIDControllerActuate.setP(p,3); kP = p; }
-    //if((i != kI)) { m_PIDControllerActuate.setI(i,3); kI = i; }
-    //if((d != kD)) { m_PIDControllerActuate.setD(d,3); kD = d; }
-    //if((ff != kFF)) { m_PIDControllerActuate.setFF(ff,3); kFF = ff; }
-    //if((ArbFF != kArbFF)) { kArbFF.set; kArbFF = ArbFF; }
+        // if PID coefficients on SmartDashboard have changed, write new values to
+        // controller
+        // if((p != kP)) { m_PIDControllerActuate.setP(p,3); kP = p; }
+        // if((i != kI)) { m_PIDControllerActuate.setI(i,3); kI = i; }
+        // if((d != kD)) { m_PIDControllerActuate.setD(d,3); kD = d; }
+        // if((ff != kFF)) { m_PIDControllerActuate.setFF(ff,3); kFF = ff; }
+        // if((ArbFF != kArbFF)) { kArbFF.set; kArbFF = ArbFF; }
 
     }
 
-    
+    /*
+     * SmartDashboard.putNumber("Arm 2 Amps", m_PDP2.getCurrent(1));
+     * 
+     * ArmAmp1 = m_PDP1.getCurrent(13);
+     * ArmAmp2 = m_PDP2.getCurrent(1);
+     * 
+     * // voltage = m_PDP.getCurrent(8);
+     */
 
-     /*    SmartDashboard.putNumber("Arm 2 Amps",    m_PDP2.getCurrent(1));
+    // }
 
-        ArmAmp1 = m_PDP1.getCurrent(13);
-        ArmAmp2 = m_PDP2.getCurrent(1);
-
-       // voltage = m_PDP.getCurrent(8);*/
-
-
-    //}
-     
     public void ActuateUp() {
-
-      //  m_PIDControllerActuate.setReference(110.5, CANSparkMax.ControlType.kSmartMotion, 0, .15, ArbFFUnits.kPercentOut);
         m_PIDControllerActuate.setReference(115, CANSparkMax.ControlType.kSmartMotion, 0, .075, ArbFFUnits.kPercentOut);
-
     }
-    public void ActuateUpCube() {
 
-        //  m_PIDControllerActuate.setReference(110.5, CANSparkMax.ControlType.kSmartMotion, 0, .15, ArbFFUnits.kPercentOut);
-          m_PIDControllerActuate.setReference(105, CANSparkMax.ControlType.kSmartMotion, 0, .075, ArbFFUnits.kPercentOut);
-  
-      }
+    public void ActuateUpCube() {
+        m_PIDControllerActuate.setReference(105, CANSparkMax.ControlType.kSmartMotion, 0, .075, ArbFFUnits.kPercentOut);
+    }
 
     public void ActuateUpHold() {
-
-      //  m_PIDControllerActuate.setReference(110, CANSparkMax.ControlType.kSmartMotion, 2, .002, ArbFFUnits.kPercentOut);
-        m_PIDControllerActuate.setReference(110, CANSparkMax.ControlType.kSmartMotion, 2, .01, ArbFFUnits.kPercentOut);
-
+        m_PIDControllerActuate.setReference(110, CANSparkMax.ControlType.kSmartMotion, 2, .02, ArbFFUnits.kPercentOut);
     }
 
     public void ActuateMiddleHold() {
+        m_PIDControllerActuate.setReference(105, CANSparkMax.ControlType.kSmartMotion, 2, .01, ArbFFUnits.kPercentOut);
+    }
 
-        //  m_PIDControllerActuate.setReference(110, CANSparkMax.ControlType.kSmartMotion, 2, .002, ArbFFUnits.kPercentOut);
-          m_PIDControllerActuate.setReference(105, CANSparkMax.ControlType.kSmartMotion, 2, -.01, ArbFFUnits.kPercentOut);
-  
-      }
-      public void ActuateMiddleCubeHold() {
-
-        //  m_PIDControllerActuate.setReference(110, CANSparkMax.ControlType.kSmartMotion, 2, .002, ArbFFUnits.kPercentOut);
-          m_PIDControllerActuate.setReference(110, CANSparkMax.ControlType.kSmartMotion, 2, -.01, ArbFFUnits.kPercentOut);
-  
-      }
+    public void ActuateMiddleCubeHold() {
+        m_PIDControllerActuate.setReference(110, CANSparkMax.ControlType.kSmartMotion, 2, -.01, ArbFFUnits.kPercentOut);
+    }
 
     public void Actuate(double Speed) {
 
-        m_ArmFollower.set(Speed /4);
+        m_ArmFollower.set(Speed / 4);
         m_ArmMaster.set(Speed / 4);
     }
-
 
     public void ManualUp() {
 
         m_ArmFollower.set(.1);
         m_ArmMaster.set(.1);
     }
-
 
     public void ManualDown() {
 
@@ -260,17 +234,13 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void ActuateToHopper() {
+        m_PIDControllerActuate.setReference(-11, CANSparkMax.ControlType.kSmartMotion, 3, -.1, ArbFFUnits.kPercentOut);
 
-     //   m_PIDControllerActuate.setReference(-18.8, CANSparkMax.ControlType.kSmartMotion, 1, -.12,  ArbFFUnits.kPercentOut);
-
-   m_PIDControllerActuate.setReference(-11, CANSparkMax.ControlType.kSmartMotion, 3, -.1,  ArbFFUnits.kPercentOut);
-        
     }
 
-    
     public void ActuateGround() {
 
-        m_PIDControllerActuate.setReference(23.3, CANSparkMax.ControlType.kSmartMotion, 0, .1, ArbFFUnits.kPercentOut);
+        m_PIDControllerActuate.setReference(34.5, CANSparkMax.ControlType.kSmartMotion, 0, .1, ArbFFUnits.kPercentOut);
         processVariable = m_encoderActuate.getPosition();
 
     }
@@ -284,7 +254,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void ActuateHome() {
 
-        m_PIDControllerActuate.setReference(-2, CANSparkMax.ControlType.kSmartMotion, 1, .1, ArbFFUnits.kPercentOut);
+        m_PIDControllerActuate.setReference(0, CANSparkMax.ControlType.kSmartMotion, 1, .1, ArbFFUnits.kPercentOut);
         processVariable = m_encoderActuate.getPosition();
     }
 
@@ -299,17 +269,15 @@ public class ArmSubsystem extends SubsystemBase {
         m_PIDControllerActuate.setReference(105, CANSparkMax.ControlType.kSmartMotion, 0, .12, ArbFFUnits.kPercentOut);
 
     }
+
     public void ActuateMiddleCube() {
         m_PIDControllerActuate.setReference(110, CANSparkMax.ControlType.kSmartMotion, 0, 0, ArbFFUnits.kPercentOut);
 
     }
-    
 
-    public void Stop(){
+    public void Stop() {
         m_PIDControllerActuate.setReference(0, ControlType.kVelocity);
     }
-    
-
 
     public void resetEncoders() {
         m_encoderActuate.setPosition(0);

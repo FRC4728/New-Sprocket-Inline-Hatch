@@ -72,12 +72,12 @@ public class SwerveModule {
 
         
            double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
-            mDriveMotor.set(ControlMode.Velocity, velocity/4, DemandType.ArbitraryFeedForward, feedforward.calculate(desiredState.speedMetersPerSecond));
+            mDriveMotor.set(ControlMode.Velocity, velocity/2.6, DemandType.ArbitraryFeedForward, feedforward.calculate(desiredState.speedMetersPerSecond));
     }
     else if (zoom == true){
         
         double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.Swerve.wheelCircumference, Constants.Swerve.driveGearRatio);
-        mDriveMotor.set(ControlMode.Velocity, velocity/2, DemandType.ArbitraryFeedForward, feedforward.calculate(desiredState.speedMetersPerSecond));
+        mDriveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, feedforward.calculate(desiredState.speedMetersPerSecond));
     
     }
     else{
