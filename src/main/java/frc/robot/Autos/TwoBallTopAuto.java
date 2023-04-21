@@ -65,17 +65,13 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
         new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= .7)),
         new ParallelRaceGroup(
           new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 114.5) &  (s_Arm.getEncoderActuate() < 115.5)),
-          new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 40))),
-        new ParallelRaceGroup(
-            new ArmHighHoldCommand(s_Arm),
-            new ParallelCommandGroup(
-        //        new ArmPistonExtendCommand(s_Piston).until(null),
-                new ArmExtendCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 62) & (s_Extend.getEncoderExtend() > 58)))),
+          new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 40)).withTimeout(2),
+          new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),  
         new ParallelRaceGroup(
             new ArmHighHoldCommand(s_Arm),
             new ParallelRaceGroup(
                 new HandOutConeCommand(s_Hand),
-                new WaitCommand(1)
+                new WaitCommand(.4)
             )
         )
        )
@@ -84,21 +80,19 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
        // new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > -7.5) & (s_Arm.getEncoderActuate() < -2.5)),
         //new ArmStopCommand(s_Arm).withTimeout(.05),
         new ParallelCommandGroup(  
-          new ArmPistonRetractCommand(s_Piston).withTimeout(1.5) ,
+          new ArmPistonRetractCommand(s_Piston).withTimeout(1) ,
           new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 48.7) & (s_Extend.getEncoderExtend() >47.7))
         ),    
 
         new ParallelCommandGroup(
           new SequentialCommandGroup(
-        new ArmToGroundAuto(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 22) & (s_Arm.getEncoderActuate() > 21.4)),
-        new ArmStopCommand(s_Arm).withTimeout(.1)),
+            new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.5) & (s_Arm.getEncoderActuate() >34.3)),
+            new ArmStopCommand(s_Arm).withTimeout(.1)),
 
         new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true))
         ),
         new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() < .7)
-        //new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < -2.5) &  (s_Arm.getEncoderActuate() > -7.5)),
-     //   new HandInCubeCommand(s_Hand).withTimeout(.3),
-       // new ArmStopCommand(s_Arm).withTimeout(.05)
+       
          )
         );
 
@@ -131,7 +125,7 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
             new ArmHighHoldCommand(s_Arm),
             new ParallelRaceGroup(
                     new HandOutCubeCommand(s_Hand),
-                    new WaitCommand(1)      
+                    new WaitCommand(.4)      
             )
     ),
     new HandStopCommand(s_Hand).withTimeout(.1),
