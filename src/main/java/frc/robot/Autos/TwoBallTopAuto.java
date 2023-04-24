@@ -140,7 +140,7 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
         s_Swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         Constants.Swerve.swerveKinematics,
         new PIDConstants(1.5, 0, 0.15, .005),
-        new PIDConstants(.6, 0, 0.05, .005),
+        new PIDConstants(.9, 0, 0.05, .005),
         s_Swerve::setModuleStates,
         eventMap,
         true,
