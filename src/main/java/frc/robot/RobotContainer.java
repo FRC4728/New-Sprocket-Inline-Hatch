@@ -131,7 +131,7 @@ public class RobotContainer {
 
    // private final PhotonVisionSubsystem s_Vision = new PhotonVisionSubsystem();
     private final Swerve s_Swerve = new Swerve();
-    private final ArmSubsystem s_Arm = new ArmSubsystem();
+    private final ArmSubsystem s_Arm = new ArmSubsystem(m_PDP);
     private final HopperSubsystem s_Hopper = new HopperSubsystem();
     private final HandSubsystem s_Hand = new HandSubsystem(m_PDP);
     private final ExtendingSubsystem s_Extend = new ExtendingSubsystem(m_PDP);
@@ -149,8 +149,8 @@ public class RobotContainer {
        s_Swerve.setDefaultCommand(
          new TeleopSwerve(
                 s_Swerve,
-                () -> -driver.getRawAxis(translationAxis), // * -driver.getRawAxis(translationAxis),
-                () -> -driver.getRawAxis(strafeAxis), // * -driver.getRawAxis(strafeAxis),
+                () -> -driver.getRawAxis(translationAxis),// * (Math.abs(-driver.getRawAxis(translationAxis))),
+                () -> -driver.getRawAxis(strafeAxis)  * (Math.abs(-driver.getRawAxis(strafeAxis))),
                 () -> -driver.getRawAxis(rotationAxis),                                                                                                                                                                                                                                                                                                
                 () -> c_5.getAsBoolean(),
                 () -> c_6.getAsBoolean(),
@@ -226,13 +226,13 @@ public class RobotContainer {
         //c_6.onTrue(ToGround());
 
 
-        c_4.onTrue(DropCone());
-        c_6.whileTrue( new ArmPistonExtendCommand(s_Piston));
+        c_3.onTrue(DropCone());
+      //  c_6.whileTrue( new ArmPistonExtendCommand(s_Piston));
         c_8.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        c_2.onTrue(DropCube());
-        c_3.onTrue(ToIntake());
-        c_1.onTrue(ToGround());
-        c_5.whileTrue(new ArmPistonRetractCommand(s_Piston));
+        c_1.onTrue(DropCube());
+        c_4.onTrue(ToIntake());
+        c_2.onTrue(ToGround());
+     //   c_5.whileTrue(new ArmPistonRetractCommand(s_Piston));
         c_10.whileTrue(new InstantCommand(() -> s_Extend.RetractButton()));
         
         c2_1.onTrue(HighArmCone());
@@ -255,9 +255,9 @@ public class RobotContainer {
        return new SequentialCommandGroup(
                   new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1)),
                  new ParallelCommandGroup(
-                  new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 114.5) &  (s_Arm.getEncoderActuate() < 115.5)),
-                  new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 40)).withTimeout(2),
-                  new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),
+                  new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 117.5) &  (s_Arm.getEncoderActuate() < 118.5)),
+                  new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).withTimeout(2),
+                  new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),
                 
                 new ArmHighHoldCommand(s_Arm)
         
@@ -317,8 +317,8 @@ public class RobotContainer {
                         new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1)),
                 new WaitCommand(.4),
                 new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
-                new ArmStopCommand(s_Arm).withTimeout(.1)
-              //  new HopperIn(s_Hopper).until(() -> (s_Hopper.IsHopOut() == Value.kReverse))
+                new ArmStopCommand(s_Arm).withTimeout(.1),
+                new HopperIn(s_Hopper).until(() -> (s_Hopper.IsHopOut() == Value.kReverse))
         );
      };
 
@@ -356,7 +356,7 @@ public class RobotContainer {
                                     new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
                                     new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1))
                                 ),
-                       new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.5) & (s_Arm.getEncoderActuate() >34.3)),
+                       new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.9) & (s_Arm.getEncoderActuate() >34.4)),
                        new ArmStopCommand(s_Arm).withTimeout(.1),
                        new ParallelCommandGroup(
                         new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 49) & (s_Extend.getEncoderExtend() >47.7)),

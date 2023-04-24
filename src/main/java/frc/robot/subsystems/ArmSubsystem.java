@@ -30,6 +30,7 @@ public class ArmSubsystem extends SubsystemBase {
     CANSparkMax m_ArmFollower = new CANSparkMax(Constants.ArmConstants.ArmFollowerID, MotorType.kBrushless);
 
     public double kP, kI, kD, kFF, kArbFF;
+    private PowerDistribution m_PDP;
 
     // private PowerDistribution m_PDP = new PowerDistribution(0, ModuleType.kCTRE);
 
@@ -43,12 +44,9 @@ public class ArmSubsystem extends SubsystemBase {
 
     double processVariable;
 
-    public ArmSubsystem() {
-        // 85 degrees and above degrees PID
-        // kP = 0.00020; 0.000075
-        // kI = 0;
-        // kD = 0.0025;
-        // kFF = 0.000100;
+    public ArmSubsystem(PowerDistribution funny) {
+
+        m_PDP = funny;
 
         kP = 0.000050;
         kI = 0;
@@ -154,8 +152,8 @@ public class ArmSubsystem extends SubsystemBase {
 
         m_ArmFollower.follow(m_ArmMaster, false);
 
-        m_ArmMaster.setSmartCurrentLimit(30);
-        m_ArmFollower.setSmartCurrentLimit(30);
+        m_ArmMaster.setSmartCurrentLimit(11);
+        m_ArmFollower.setSmartCurrentLimit(11);
 
         m_ArmMaster.burnFlash();
         m_ArmFollower.burnFlash();
@@ -167,11 +165,11 @@ public class ArmSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Arm position", m_encoderActuate.getPosition());
 
         // read PID coefficients from SmartDashboard
-        double p = SmartDashboard.getNumber("P Gain", 0);
-        double i = SmartDashboard.getNumber("I Gain", 0);
-        double d = SmartDashboard.getNumber("D Gain", 0);
-        double iz = SmartDashboard.getNumber("I Zone", 0);
-        double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    //    double p = SmartDashboard.getNumber("P Gain", 0);
+      //  double i = SmartDashboard.getNumber("I Gain", 0);
+        //double d = SmartDashboard.getNumber("D Gain", 0);
+       // double iz = SmartDashboard.getNumber("I Zone", 0);
+       // double ff = SmartDashboard.getNumber("Feed Forward", 0);
         // double ArbFF = SmartDashboard.getNumber("Arb Feed Forward", 0);
 
         // if PID coefficients on SmartDashboard have changed, write new values to
@@ -182,21 +180,22 @@ public class ArmSubsystem extends SubsystemBase {
         // if((ff != kFF)) { m_PIDControllerActuate.setFF(ff,3); kFF = ff; }
         // if((ArbFF != kArbFF)) { kArbFF.set; kArbFF = ArbFF; }
 
-    }
+    
+//master
+   //   SmartDashboard.putNumber("Arm 1 Amps", m_PDP.getCurrent(13));
 
-    /*
-     * SmartDashboard.putNumber("Arm 2 Amps", m_PDP2.getCurrent(1));
-     * 
-     * ArmAmp1 = m_PDP1.getCurrent(13);
-     * ArmAmp2 = m_PDP2.getCurrent(1);
-     * 
-     * // voltage = m_PDP.getCurrent(8);
-     */
+//follower
+   //   SmartDashboard.putNumber("Arm 2 Amps", m_PDP.getCurrent(1));
+      
+     // ArmAmp1 = m_PDP.getCurrent(13);
+     // ArmAmp2 = m_PDP.getCurrent(1);
+     // voltage = m_PDP.getCurrent(8);
+     
 
-    // }
-
+     }
+    
     public void ActuateUp() {
-        m_PIDControllerActuate.setReference(115, CANSparkMax.ControlType.kSmartMotion, 0, .075, ArbFFUnits.kPercentOut);
+        m_PIDControllerActuate.setReference(118, CANSparkMax.ControlType.kSmartMotion, 0, .075, ArbFFUnits.kPercentOut);
     }
 
     public void ActuateUpCube() {

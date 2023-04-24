@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.9197388561047917,
-        "y": 4.227099380564558
+        "x": 1.8778355388379817,
+        "y": 4.3797804000743525
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8425834881188417,
-        "y": 5.277662849212863
+        "x": 3.697020838549523,
+        "y": 5.312961979276313
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -24,20 +24,20 @@
     },
     {
       "anchorPoint": {
-        "x": 7.1087562602678664,
-        "y": 4.57935766227827
+        "x": 5.125505600511914,
+        "y": 5.123085167710991
       },
       "prevControl": {
-        "x": 7.085917923992904,
-        "y": 3.4260216803926316
+        "x": 4.1315010063869195,
+        "y": 5.138863018411389
       },
       "nextControl": {
-        "x": 7.131594596542829,
-        "y": 5.732693644163909
+        "x": 6.566373303930631,
+        "y": 5.10021425178371
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": -131.98721249581666,
       "isReversal": false,
-      "velOverride": 0.5,
+      "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -49,20 +49,20 @@
     },
     {
       "anchorPoint": {
-        "x": 4.195485065554455,
-        "y": 5.417161143110885
+        "x": 7.092404370258099,
+        "y": 4.574183185456242
       },
       "prevControl": {
-        "x": 6.272851453472359,
-        "y": 6.236601733613155
+        "x": 6.9094370428398495,
+        "y": 4.72284413898357
       },
       "nextControl": {
-        "x": 2.1181186776365504,
-        "y": 4.597720552608615
+        "x": 7.140198887398106,
+        "y": 4.535350140279987
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 270.0,
       "isReversal": false,
-      "velOverride": 1.0,
+      "velOverride": null,
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
@@ -74,15 +74,15 @@
     },
     {
       "anchorPoint": {
-        "x": 2.843574903301827,
-        "y": 6.86427624636722
+        "x": 7.080968912294458,
+        "y": 3.4077664731649007
       },
       "prevControl": {
-        "x": 1.8524941798447276,
-        "y": 6.497398174567753
+        "x": 7.080968912294458,
+        "y": 3.853749333746885
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 270.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -95,8 +95,12 @@
       }
     }
   ],
-  "maxVelocity": 4.0,
-  "maxAcceleration": 100.0,
-  "isReversed": null,
-  "markers": []
+  "markers": [
+    {
+      "position": 0.01,
+      "names": [
+        "ArmHighCubeRetract"
+      ]
+    }
+  ]
 }

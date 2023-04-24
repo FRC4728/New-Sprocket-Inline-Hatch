@@ -47,20 +47,6 @@ public final class CTREConfigs {
         swerveDriveFXConfig.openloopRamp = Constants.Swerve.openLoopRamp;
         swerveDriveFXConfig.closedloopRamp = Constants.Swerve.closedLoopRamp;
 
-        SupplyCurrentLimitConfiguration driveSupplyLimitAuto = new SupplyCurrentLimitConfiguration(
-            Constants.Swerve.driveEnableCurrentLimit, 
-            Constants.Swerve.driveContinuousCurrentLimit, 
-            Constants.Swerve.drivePeakCurrentLimit, 
-            Constants.Swerve.drivePeakCurrentDuration);
-
-        swerveDriveAutoFXConfig.slot0.kP = Constants.Swerve.driveKP;
-        swerveDriveAutoFXConfig.slot0.kI = Constants.Swerve.driveKI;
-        swerveDriveAutoFXConfig.slot0.kD = Constants.Swerve.driveKD;
-        swerveDriveAutoFXConfig.slot0.kF = Constants.Swerve.driveKF;        
-        swerveDriveAutoFXConfig.supplyCurrLimit = driveSupplyLimit;
-        swerveDriveAutoFXConfig.openloopRamp = Constants.Swerve.openLoopRamp;
-        swerveDriveAutoFXConfig.closedloopRamp = Constants.Swerve.closedLoopRamp;
-
         
         /* Swerve CANCoder Configuration */
         swerveCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;

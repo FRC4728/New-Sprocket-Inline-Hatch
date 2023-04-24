@@ -58,15 +58,17 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
       HopperSubsystem s_Hopper, PistonSubsystem s_Piston) {
     // Path Planner Path
     String robot_path = "2 Ball Top";
+    String end_of_path = "End of 2 Ball Top";
     PathPlannerTrajectory TestPath = PathPlanner.loadPath(robot_path, new PathConstraints(2.3, 2.3));
+    PathPlannerTrajectory EndofTwoBall = PathPlanner.loadPath(end_of_path, new PathConstraints(2.3, 2.3));
     HashMap<String, Command> eventMap = new HashMap<>();
  
       eventMap.put("ArmHighConePlace", new SequentialCommandGroup(
         new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= .7)),
-        new ParallelRaceGroup(
-          new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 114.5) &  (s_Arm.getEncoderActuate() < 115.5)),
-          new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 40)).withTimeout(2),
-          new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),  
+        new ParallelCommandGroup(
+          new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 117.5) &  (s_Arm.getEncoderActuate() < 118.5)),
+          new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).withTimeout(2.2),
+          new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),  
         new ParallelRaceGroup(
             new ArmHighHoldCommand(s_Arm),
             new ParallelRaceGroup(
@@ -80,13 +82,13 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
        // new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > -7.5) & (s_Arm.getEncoderActuate() < -2.5)),
         //new ArmStopCommand(s_Arm).withTimeout(.05),
         new ParallelCommandGroup(  
-          new ArmPistonRetractCommand(s_Piston).withTimeout(1) ,
+          new ArmPistonRetractCommand(s_Piston).withTimeout(.7) ,
           new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 48.7) & (s_Extend.getEncoderExtend() >47.7))
         ),    
 
         new ParallelCommandGroup(
           new SequentialCommandGroup(
-            new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.5) & (s_Arm.getEncoderActuate() >34.3)),
+            new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.9) & (s_Arm.getEncoderActuate() >34.4)),
             new ArmStopCommand(s_Arm).withTimeout(.1)),
 
         new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true))
@@ -98,11 +100,7 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
 
 
         eventMap.put("ArmUp", new SequentialCommandGroup(
-          // new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > -7.5) & (s_Arm.getEncoderActuate() < -2.5)),
-           //new ArmStopCommand(s_Arm).withTimeout(.05),
-           new ParallelCommandGroup(  
-             new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5))
-           ),
+            new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5)),
            new ParallelRaceGroup(
             new ArmHighHoldCommand(s_Arm),
             new ArmExtendCommand(s_Extend).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))
@@ -128,30 +126,12 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
                     new WaitCommand(.4)      
             )
     ),
-    new HandStopCommand(s_Hand).withTimeout(.1),
-    new ParallelRaceGroup(
-            new ArmPistonRetractCommand(s_Piston).withTimeout(1.5),
-            new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <=.7))
-    ),
-    new ArmStopCommand(s_Arm).withTimeout(.05)));
-
-   eventMap.put("ArmGroundCube", new SequentialCommandGroup(
-                                new ParallelCommandGroup(  
-                                    new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
-                                    new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() < .7))
-                                ),
-                       new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 36) & (s_Arm.getEncoderActuate() > 34)),
-                       new ArmStopCommand(s_Arm).withTimeout(.1),
-                       new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 46) & (s_Extend.getEncoderExtend() >44)),
-                       new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true)),
-                       new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() < .7),
-                       new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < -2.5) &  (s_Arm.getEncoderActuate() > -7.5)),
-                       new HandInCubeCommand(s_Hand).withTimeout(.3),
-                       new ArmStopCommand(s_Arm).withTimeout(.05)
-   
-                       ) );
+    new HandStopCommand(s_Hand).withTimeout(.1)));
    
 
+
+
+    
     // 4. Construct command to follow trajectory
 
     // auto builder can use events added in through Path Planner
@@ -160,13 +140,15 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
         s_Swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         Constants.Swerve.swerveKinematics,
         new PIDConstants(1.5, 0, 0.15, .005),
-        new PIDConstants(1.3, 0, 0, .005),
+        new PIDConstants(.6, 0, 0.05, .005),
         s_Swerve::setModuleStates,
         eventMap,
         true,
         s_Swerve);
 
     Command fullAuto = autobuilder.fullAuto(TestPath);
+    Command fullAuto2 = autobuilder.fullAuto(EndofTwoBall);
+
 
     // 5. Add some init and wrap-up, and return everything
     addCommands(
@@ -174,6 +156,7 @@ public class TwoBallTopAuto extends SequentialCommandGroup {
             // new InstantCommand(() ->
             // swerveSubsystem.resetOdometry(TestPath.getInitialPose())),
             fullAuto,
+            fullAuto2,
             new InstantCommand(() -> s_Swerve.stopModules())));
 
     // new InstantCommand(() -> swerveSubsystem.getPose()));
