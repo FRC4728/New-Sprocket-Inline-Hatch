@@ -70,8 +70,8 @@ import frc.robot.Constants;
 
         @Override
         public void periodic() {
-        SmartDashboard.putNumber("Hand Voltage",    m_PDP.getCurrent(8));
-       voltage = m_PDP.getCurrent(8);
+        SmartDashboard.putNumber("Hand Voltage",    m_PDP.getCurrent(4));
+       voltage = m_PDP.getCurrent(4);
          SmartDashboard.putNumber("Hand Velocity", m_HandEncoder.getVelocity());
         }
 
@@ -106,7 +106,7 @@ import frc.robot.Constants;
 
          public void RunHandsOutCube(){
              //try
-                 m_HandController.setReference(-150, CANSparkMax.ControlType.kVelocity);
+                 m_HandController.setReference(-120, CANSparkMax.ControlType.kVelocity);
                //  processVariable = m_encoderActuate.getVelocity();
              }
 

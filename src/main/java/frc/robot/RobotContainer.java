@@ -12,6 +12,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -47,7 +48,10 @@ import frc.robot.Autos.DoNothingAuto;
 import frc.robot.Autos.PlaceAndBackUpAutoLow;
 import frc.robot.Autos.PlaceandBackUpAutoHigh;
 import frc.robot.Autos.TestAuto;
+import frc.robot.Autos.ThreePieceAuto;
+import frc.robot.Autos.ThreePieceAutoGood;
 import frc.robot.Autos.BottomAuto;
+import frc.robot.Autos.BumpSideAuto;
 import frc.robot.Autos.ChargeStationAuto;
 import frc.robot.Autos.ChargeTopAuto;
 import frc.robot.commands.*;
@@ -146,9 +150,113 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
         public RobotContainer() {
+                PathPlannerServer.startServer(5811);
+
+                HashMap<String, Command> eventMap = new HashMap<>();
+    
+   
+                //    double p = SmartDashboard.getNumber("P Gain", 0);
+                  //  double i = SmartDashboard.getNumber("I Gain", 0);
+                    //double d = SmartDashboard.getNumber("D Gain", 0);
+             
+                  eventMap.put("ArmHighConePlace", new SequentialCommandGroup(
+                    new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.2)),
+                    new ParallelCommandGroup(
+                      new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 117.5) &  (s_Arm.getEncoderActuate() < 118.5)),
+                      new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).withTimeout(2.2),
+                      new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),  
+                    new ParallelRaceGroup(
+                        new ArmHighHoldCommand(s_Arm),
+                        new ParallelRaceGroup(
+                            new HandOutConeCommand(s_Hand),
+                            new WaitCommand(.4)
+                        )
+                    )
+                   )
+                  );
+                  eventMap.put("ArmHighCubeRetract", new SequentialCommandGroup(
+                   // new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > -7.5) & (s_Arm.getEncoderActuate() < -2.5)),
+                    //new ArmStopCommand(s_Arm).withTimeout(.05),
+                    new ParallelCommandGroup(  
+                      new ArmPistonRetractCommand(s_Piston).withTimeout(1) ,
+                      new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 48.7) & (s_Extend.getEncoderExtend() >47.7))
+                    ),    
+            
+                    new ParallelCommandGroup(
+                      new SequentialCommandGroup(
+                        new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 33.9) & (s_Arm.getEncoderActuate() >33)),
+                        new ArmStopCommand(s_Arm).withTimeout(.1)),
+            
+                    new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true))
+                    ),
+                    new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() < .7)
+                   
+                     )
+                    );
+            
+            
+                    eventMap.put("ArmUp", new SequentialCommandGroup(
+                        new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5)),
+                       new ParallelRaceGroup(
+                        new ArmHighHoldCommand(s_Arm),
+                        new ArmExtendCommand(s_Extend).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))
+                   )
+                   //           new ArmStopCommand(s_Arm).withTimeout(.1)
+            
+                        )
+                       );
+            
+            
+                eventMap.put("ArmHighCube", new SequentialCommandGroup(
+                    //new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <=.7)),
+                    new HandStopCommand(s_Hand).withTimeout(.1),
+                    new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5)),
+                    new ParallelRaceGroup(
+                         new ArmHighHoldCommand(s_Arm),
+                         new ArmExtendCommand(s_Extend).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))
+                    ),
+                    new ParallelRaceGroup(
+                        new ArmHighHoldCommand(s_Arm),
+                        new ParallelRaceGroup(
+                                new HandOutCubeCommand(s_Hand),
+                                new WaitCommand(.4)      
+                        )
+                ),
+                new HandStopCommand(s_Hand).withTimeout(.1)));
+
+
+                eventMap.put("GroundPickup",  new SequentialCommandGroup(
+                        new ParallelCommandGroup(  
+                            new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
+                            new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                            new HopperIn(s_Hopper).withTimeout(.05),
+                            new WaitCommand(.3)
+                        ),
+               new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 35.8) & (s_Arm.getEncoderActuate() >34.3)),
+               new ArmStopCommand(s_Arm).withTimeout(.1),
+               new ParallelCommandGroup(
+                new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 49) & (s_Extend.getEncoderExtend() >47.7)),
+                new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true))
+                ),
+               new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1),
+            //  new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
+               new HandInCubeCommand(s_Hand).withTimeout(.3),
+               new ArmStopCommand(s_Arm).withTimeout(.05)
+
+                ));
+
+                eventMap.put("ArmRetract", new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1));
+                
+                eventMap.put("CubePlace", new HandOutCubeCommand(s_Hand).withTimeout(.3));
+
+                eventMap.put("HopOut", new HopperOut(s_Hopper).withTimeout(.6));
+
+                eventMap.put("HopIn", new HopperIn(s_Hopper).withTimeout(.05));
+
+                
        s_Swerve.setDefaultCommand(
          new TeleopSwerve(
-                s_Swerve,
+               s_Swerve,
                 () -> -driver.getRawAxis(translationAxis),// * (Math.abs(-driver.getRawAxis(translationAxis))),
                 () -> -driver.getRawAxis(strafeAxis)  * (Math.abs(-driver.getRawAxis(strafeAxis))),
                 () -> -driver.getRawAxis(rotationAxis),                                                                                                                                                                                                                                                                                                
@@ -160,9 +268,9 @@ public class RobotContainer {
                 s_Extend,
                 () ->   -driver.getRawAxis(3)));
 
-       // s_Arm.setDefaultCommand(new ArmOverride(
-         //   s_Arm,
-           //     () ->   -driver.getRawAxis(1)));
+     //   s_Arm.setDefaultCommand(new ArmOverride(
+       //     s_Arm,
+         //       () ->   -driver.getRawAxis(1)));
 
         m_chooser.setDefaultOption("Two Piece Top", new TwoBallTopAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
          m_chooser.addOption("DoNothing", new DoNothingAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
@@ -172,6 +280,9 @@ public class RobotContainer {
          m_chooser.addOption("TestAuto", new TestAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
          m_chooser.addOption("1.5 Piece, Then Charge, Top", new ChargeTopAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
          m_chooser.addOption("Bottom 1.5 Piece", new BottomAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+         m_chooser.addOption("3 Piece Top", new ThreePieceAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston, eventMap));
+         m_chooser.addOption("3 Piece Top Good", new ThreePieceAutoGood(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston, eventMap));
+         m_chooser.addOption("Bump Side", new BumpSideAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston, eventMap));
 
 
         // Put the chooser on the dashboard+
@@ -237,6 +348,7 @@ public class RobotContainer {
         
         c2_1.onTrue(HighArmCone());
         c2_2.onTrue(HighArmCube());
+       // c2_2.onTrue(new HopperOut(s_Hopper));
         c2_3.onTrue(new HopperIn(s_Hopper));
         c2_4.onTrue(MidArmCone());
         c2_5.onTrue(MidArmCube());
@@ -253,12 +365,11 @@ public class RobotContainer {
 
       public Command HighArmCone() {
        return new SequentialCommandGroup(
-                  new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1)),
+                  new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
                  new ParallelCommandGroup(
                   new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 117.5) &  (s_Arm.getEncoderActuate() < 118.5)),
                   new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).withTimeout(2),
                   new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),
-                
                 new ArmHighHoldCommand(s_Arm)
         
        );
@@ -266,16 +377,14 @@ public class RobotContainer {
      }
      public Command HighArmCube() {
         return new SequentialCommandGroup(
-                   new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1)),
-                   new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5)),
-                  // new ParallelRaceGroup(
-                        //new ArmMiddleCubeHoldCommand(s_Arm),
-                        new ArmStopCommand(s_Arm).withTimeout(.2),
-                        new ArmExtendCommand(s_Extend).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58)),
-                        new ArmMiddleHoldCommand(s_Arm)
-                 //  )
-                 //  new ArmStopCommand(s_Arm).withTimeout(.2)
-          //     new ArmMiddleCubeHoldCommand(s_Arm)
+                   new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                   new ParallelRaceGroup(
+                        new SequentialCommandGroup(
+                                new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5)),
+                                new ArmMiddleHoldCommand(s_Arm)
+                        ),
+                        new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),
+                   new ArmMiddleHoldCommand(s_Arm)
         );
                                   
       }
@@ -283,13 +392,16 @@ public class RobotContainer {
      public Command MidArmCone() {
        return new SequentialCommandGroup(
                 new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),  
-                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1)),
-                  new ArmMiddleCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 105.5)),
-                  new ParallelCommandGroup(
-                        new ArmMiddleHoldCommand(s_Arm),
-                        new ArmExtendMidCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 47) & (s_Extend.getEncoderExtend() > 43))
-                  )
-       );
+                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                new ParallelRaceGroup(
+                  new SequentialCommandGroup(      
+                  new ArmMiddleCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 109.5) &  (s_Arm.getEncoderActuate() < 110.5)),
+                  new ArmMiddleHoldCommand(s_Arm)
+                  ),
+                        new ArmExtendMidCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> (s_Extend.getEncoderExtend() < 47) & (s_Extend.getEncoderExtend() > 43))
+                  ),
+                  new ArmMiddleHoldCommand(s_Arm)  
+                  );
                        
                   
        
@@ -297,8 +409,8 @@ public class RobotContainer {
      public Command MidArmCube() {
         return new SequentialCommandGroup(
                 new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
-                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1)),
-                new ArmMiddleCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 109.9) &  (s_Arm.getEncoderActuate() < 110.1)),
+                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                new ArmMiddleCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 89.8) &  (s_Arm.getEncoderActuate() < 90.2)),
                 new ArmMiddleCubeHoldCommand(s_Arm)
                 );
                    
@@ -314,7 +426,7 @@ public class RobotContainer {
                 new HandStopCommand(s_Hand).withTimeout(.1),
                 new ParallelCommandGroup(
                         new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
-                        new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1)),
+                        new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1.5)),
                 new WaitCommand(.4),
                 new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
                 new ArmStopCommand(s_Arm).withTimeout(.1),
@@ -328,7 +440,7 @@ public class RobotContainer {
                 //new HandStopCommand(s_Hand).withTimeout(.1),
                 new ParallelCommandGroup(
                         new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
-                        new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1)),
+                        new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1.5)),
                 new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
                 new ArmStopCommand(s_Arm).withTimeout(.1)
         );
@@ -338,31 +450,36 @@ public class RobotContainer {
      return new SequentialCommandGroup(
                 new ParallelCommandGroup(  
                     new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
-                    new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1))
+                    new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1.5))
                 ),
                 new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
                 new HopperOut(s_Hopper).until (() -> (s_Hopper.HopperDown() == Value.kForward)),
+                new ParallelCommandGroup(
                 new ArmToHopperCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < -10.5) & (s_Arm.getEncoderActuate() > -11.5) ),
-                new HandInConeCommand(s_Hand).until(() ->  s_Hand.getvoltage()),
+                new HandInConeCommand(s_Hand).until(() ->  s_Hand.getvoltage())
+                ),
+                new ParallelRaceGroup(
                 new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1) &  (s_Arm.getEncoderActuate() > -1)),
-                new HandInConeCommand(s_Hand).withTimeout(.25),
+                new HandInConeCommand(s_Hand)
+                ),
                 new ArmStopCommand(s_Arm).withTimeout(.2),
-                new HopperIn(s_Hopper).until (() -> s_Hopper.HopperDown() == Value.kReverse)
+                new HopperIn(s_Hopper).until (() -> s_Hopper.HopperDown() == Value.kReverse),
+                new HandInConeCommand(s_Hand).withTimeout(.4)
                 );
         }
         public Command ToGround() {
                 return new SequentialCommandGroup(
                                 new ParallelCommandGroup(  
                                     new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
-                                    new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1))
+                                    new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1.5))
                                 ),
-                       new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.9) & (s_Arm.getEncoderActuate() >34.4)),
+                       new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 33.9) & (s_Arm.getEncoderActuate() >33)),
                        new ArmStopCommand(s_Arm).withTimeout(.1),
                        new ParallelCommandGroup(
                         new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 49) & (s_Extend.getEncoderExtend() >47.7)),
                         new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true))
                         ),
-                       new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1),
+                       new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1.5),
                        new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
                        new HandInCubeCommand(s_Hand).withTimeout(.3),
                        new ArmStopCommand(s_Arm).withTimeout(.05)
@@ -375,9 +492,9 @@ public class RobotContainer {
           return new SequentialCommandGroup(
                           new ParallelCommandGroup(  
                               new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
-                              new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1))
+                              new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1.5))
                           ),
-                 new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 35.5) & (s_Arm.getEncoderActuate() > 34.4)),
+                 new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.5) & (s_Arm.getEncoderActuate() > 33.4)),
                  new ArmStopCommand(s_Arm).withTimeout(.1)
           );
         }
@@ -394,9 +511,10 @@ public class RobotContainer {
                         new HandStopCommand(s_Hand).withTimeout(.2),
                         new ParallelRaceGroup(
                                 new ArmPistonRetractCommand(s_Piston).withTimeout(1.5),
-                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1))
-                        )
-                        
+                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5))
+                        ),
+                        new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
+                        new ArmStopCommand(s_Arm)
           
                     //    new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() > -7.5) & (s_Arm.getEncoderActuate() < -2.5)),
                      //   new ArmStopCommand(s_Arm)
@@ -412,11 +530,11 @@ public class RobotContainer {
                         )),
                         new ParallelCommandGroup(
                                 new ArmPistonRetractCommand(s_Piston).withTimeout(.4),
-                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1))
+                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5))
                         ),
                         
           
-                        new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < -.5) & (s_Arm.getEncoderActuate() > -3)),
+                        new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
                         new ArmStopCommand(s_Arm)
                         );
         }

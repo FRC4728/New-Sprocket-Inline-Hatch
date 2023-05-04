@@ -17,7 +17,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "High Arm Cube"
+          "High Arm Cone"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "after",

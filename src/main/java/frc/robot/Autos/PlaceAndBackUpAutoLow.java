@@ -49,6 +49,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class PlaceAndBackUpAutoLow extends SequentialCommandGroup {
     
@@ -58,28 +59,31 @@ public class PlaceAndBackUpAutoLow extends SequentialCommandGroup {
     HopperSubsystem s_Hopper, PistonSubsystem s_Piston){
     // Path Planner Path
     String robot_path = "PlaceAndBackUpLow";
-    PathPlannerTrajectory TestPath = PathPlanner.loadPath(robot_path, new PathConstraints(1, 1));
+    PathPlannerTrajectory TestPath = PathPlanner.loadPath(robot_path, new PathConstraints(2.3, 2.3));
 
     HashMap<String, Command> eventMap = new HashMap<>();
 
-    eventMap.put("High Arm Cube", 
+    eventMap.put("High Arm Cone", 
     new SequentialCommandGroup(
-        new ArmHighCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > 111.5) & (s_Arm.getEncoderActuate() < 112.5)),
+      new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.3)),
+      new ParallelCommandGroup(
+       new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 117.5) &  (s_Arm.getEncoderActuate() < 118.5)),
+       new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).withTimeout(2),
+       new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),
       new ParallelRaceGroup(
           new ArmHighHoldCommand(s_Arm),
-          new ParallelCommandGroup(
-              new ArmPistonExtendCommand(s_Piston).withTimeout(2),
-              new ArmExtendCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 62) & (s_Extend.getEncoderExtend() > 58)))),
-      new ParallelRaceGroup(
-          new ArmHighHoldCommand(s_Arm),
-          new ParallelRaceGroup(
-              new HandOutConeCommand(s_Hand),
-              new WaitCommand(1)
-          )),
-          new ParallelCommandGroup(
-            new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
-            new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() < .7)),
-    new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < -2.5) & (s_Arm.getEncoderActuate() > -7.5)),
+
+    new ParallelRaceGroup(        
+            new HandOutConeCommand(s_Hand),
+            new WaitCommand(1)      
+    )),
+    new ParallelCommandGroup(
+            new ArmPistonRetractCommand(s_Piston).withTimeout(1),
+            new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.3))
+    ),
+    
+
+    new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
     new ArmStopCommand(s_Arm).withTimeout(.1)));
 
    // eventMap.put("IntakeOff", new IntakeOffCommand(m_IntakeSubsystem));
@@ -93,8 +97,8 @@ public class PlaceAndBackUpAutoLow extends SequentialCommandGroup {
         s_Swerve::getPose,
         s_Swerve::resetOdometry, // Pose2d consumer, used to reset odometry at the beginning of auto
         Constants.Swerve.swerveKinematics,
-        new PIDConstants(1, 0, 0, .005),
-        new PIDConstants(1.2, 0, 0, .005),
+        new PIDConstants(1.4, 0, 0.15, .005),
+        new PIDConstants(2, 0, 0.05, .005),
         s_Swerve::setModuleStates,
         eventMap,
         true,
