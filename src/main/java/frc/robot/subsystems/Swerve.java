@@ -68,11 +68,6 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(3, Constants.Swerve.Mod3.constants)
         };
 
-
-        /* By pausing init for a second before setting module offsets, we avoid a bug with inverting motors.
-         * See https://github.com/Team364/BaseFalconSwerve/issues/8 for more info.
-         */
-       // Timer.delay(1.0);
        new Thread(() -> {
         try {
             //possible
@@ -239,29 +234,11 @@ public class Swerve extends SubsystemBase {
     public void updateOdometry() {
         poseEstimator.update(getYaw(), getModulePositions());  
 
-        // Also apply vision measurements. We use 0.3 seconds in the past as an example
-        // -- on
-        // a real robot, this must be calculated based either on latency or timestamps.
-
-     //  Optional<EstimatedRobotPose> result =
-      //         vision1.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
-
-
-     //   if (result.isPresent()) {
-       //     EstimatedRobotPose camPose = result.get();
-       //     SmartDashboard.putString("Photonvision pose", camPose.estimatedPose.toPose2d().toString());
-       //     poseEstimator.addVisionMeasurement(
-         //           camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-       
-//    }
 }
     @Override
     public void periodic(){
-        updateOdometry();  
+        updateOdometry();
                     SmartDashboard.putString("Robot Pose", poseEstimator.getEstimatedPosition().toString());
-           
-
-
     }
 
 
@@ -272,7 +249,6 @@ public class Swerve extends SubsystemBase {
         for(SwerveModule mod : mSwerveMods){
             mod.stop();
         }
-
     }
 
     public double getPitch()
@@ -280,47 +256,3 @@ public class Swerve extends SubsystemBase {
         return gyro.getPitch();
     }
 }
-/* 
-public void Update_Limelight_Tracking()
-{
-      // These numbers must be tuned for your Robot!  Be careful!
-      final double STEER_K = 0.03;                    // how hard to turn toward the target
-      final double DRIVE_K = 0.26;                    // how hard to drive fwd toward the target
-      final double DESIRED_TARGET_AREA = 13.0;        // Area of the target when the robot reaches the wall
-      final double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
-
-      double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-      double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-      double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-      double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-
-      if (tv < 1.0)
-      {
-        m_LimelightHasValidTarget = false;
-        m_LimelightDriveCommand = 0.0;
-        m_LimelightSteerCommand = 0.0;
-        return;
-      }
-
- 
-
-        double heading_error = -tx;
-        double distance_error = -ty;
-        double steering_adjust = 0.0f;
-
-        if (tx > 1.0)
-        {
-                steering_adjust = KpAim*heading_error - min_aim_command;
-        }
-        else if (tx < -1.0)
-        {
-                steering_adjust = KpAim*heading_error + min_aim_command;
-        }
-
-        double distance_adjust = KpDistance * distance_error;
-
-        left_command += steering_adjust + distance_adjust;
-        right_command -= steering_adjust + distance_adjust;
-
-}
-} */

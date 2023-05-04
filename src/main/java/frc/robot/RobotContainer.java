@@ -96,507 +96,510 @@ public class RobotContainer {
 
         private PowerDistribution m_PDP = new PowerDistribution(0, ModuleType.kCTRE);
 
-    /* Controllers */
-    private final Joystick driver = new Joystick(0);
-    private final Joystick operator = new Joystick(1);
+        /* Controllers */
+        private final Joystick driver = new Joystick(0);
+        private final Joystick operator = new Joystick(1);
 
-    /* Drive Controls */
-    private final int translationAxis = 1;
-    private final int strafeAxis = 0;
-    private final int rotationAxis = 4;
+        /* Drive Controls */
+        private final int translationAxis = 1;
+        private final int strafeAxis = 0;
+        private final int rotationAxis = 4;
 
-    /* Driver Buttons */
-    private final JoystickButton c_1 = new JoystickButton(driver, 1);
-    private final JoystickButton c_2 = new JoystickButton(driver, 2);
-    private final JoystickButton c_3 = new JoystickButton(driver, 3);
-    private final JoystickButton c_4 = new JoystickButton(driver, 4);
-    private final JoystickButton c_5 = new JoystickButton(driver, 5);
-    private final JoystickButton c_6 = new JoystickButton(driver, 6);
-    private final JoystickButton c_7 = new JoystickButton(driver, 7);
-    private final JoystickButton c_8 = new JoystickButton(driver, 8);
-    private final JoystickButton c_9 = new JoystickButton(driver, 9);
-    private final JoystickButton c_10 = new JoystickButton(driver, 10);
-    private final JoystickButton c_11 = new JoystickButton(driver, 11);
-    private final JoystickButton c_12 = new JoystickButton(driver, 12);
+        /* Driver Buttons */
+        private final JoystickButton c_1 = new JoystickButton(driver, 1);
+        private final JoystickButton c_2 = new JoystickButton(driver, 2);
+        private final JoystickButton c_3 = new JoystickButton(driver, 3);
+        private final JoystickButton c_4 = new JoystickButton(driver, 4);
+        private final JoystickButton c_5 = new JoystickButton(driver, 5);
+        private final JoystickButton c_6 = new JoystickButton(driver, 6);
+        private final JoystickButton c_7 = new JoystickButton(driver, 7);
+        private final JoystickButton c_8 = new JoystickButton(driver, 8);
+        private final JoystickButton c_9 = new JoystickButton(driver, 9);
+        private final JoystickButton c_10 = new JoystickButton(driver, 10);
+        private final JoystickButton c_11 = new JoystickButton(driver, 11);
+        private final JoystickButton c_12 = new JoystickButton(driver, 12);
 
-    private final JoystickButton c2_1 = new JoystickButton(operator, 1);
-    private final JoystickButton c2_2 = new JoystickButton(operator, 2);
-    private final JoystickButton c2_3 = new JoystickButton(operator, 3);
-    private final JoystickButton c2_4 = new JoystickButton(operator, 4);
-    private final JoystickButton c2_5 = new JoystickButton(operator, 5);
-    private final JoystickButton c2_6 = new JoystickButton(operator, 6);
-    private final JoystickButton c2_7 = new JoystickButton(operator, 7);
-    private final JoystickButton c2_8 = new JoystickButton(operator, 8);
-    private final JoystickButton c2_9 = new JoystickButton(operator, 9);
-    private final JoystickButton c2_10 = new JoystickButton(operator, 10);
-    private final JoystickButton c2_11 = new JoystickButton(operator, 11);
-    private final JoystickButton c2_12 = new JoystickButton(operator, 12);
-    /* Subsystems */
+        private final JoystickButton c2_1 = new JoystickButton(operator, 1);
+        private final JoystickButton c2_2 = new JoystickButton(operator, 2);
+        private final JoystickButton c2_3 = new JoystickButton(operator, 3);
+        private final JoystickButton c2_4 = new JoystickButton(operator, 4);
+        private final JoystickButton c2_5 = new JoystickButton(operator, 5);
+        private final JoystickButton c2_6 = new JoystickButton(operator, 6);
+        private final JoystickButton c2_7 = new JoystickButton(operator, 7);
+        private final JoystickButton c2_8 = new JoystickButton(operator, 8);
+        private final JoystickButton c2_9 = new JoystickButton(operator, 9);
+        private final JoystickButton c2_10 = new JoystickButton(operator, 10);
+        private final JoystickButton c2_11 = new JoystickButton(operator, 11);
+        private final JoystickButton c2_12 = new JoystickButton(operator, 12);
+        /* Subsystems */
 
-   // private final PhotonVisionSubsystem s_Vision = new PhotonVisionSubsystem();
-    private final Swerve s_Swerve = new Swerve();
-    private final ArmSubsystem s_Arm = new ArmSubsystem(m_PDP);
-    private final HopperSubsystem s_Hopper = new HopperSubsystem();
-    private final HandSubsystem s_Hand = new HandSubsystem(m_PDP);
-    private final ExtendingSubsystem s_Extend = new ExtendingSubsystem(m_PDP);
-    private final PistonSubsystem s_Piston = new PistonSubsystem();
+        // private final PhotonVisionSubsystem s_Vision = new PhotonVisionSubsystem();
+        private final Swerve s_Swerve = new Swerve();
+        private final ArmSubsystem s_Arm = new ArmSubsystem(m_PDP);
+        private final HopperSubsystem s_Hopper = new HopperSubsystem();
+        private final HandSubsystem s_Hand = new HandSubsystem(m_PDP);
+        private final ExtendingSubsystem s_Extend = new ExtendingSubsystem(m_PDP);
+        private final PistonSubsystem s_Piston = new PistonSubsystem();
 
-    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
+        private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-    double r;
-    double Theta;
+        double r;
+        double Theta;
 
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
+        /**
+         * The container for the robot. Contains subsystems, OI devices, and commands.
+         */
         public RobotContainer() {
                 PathPlannerServer.startServer(5811);
 
                 HashMap<String, Command> eventMap = new HashMap<>();
-    
-   
-                //    double p = SmartDashboard.getNumber("P Gain", 0);
-                  //  double i = SmartDashboard.getNumber("I Gain", 0);
-                    //double d = SmartDashboard.getNumber("D Gain", 0);
-             
-                  eventMap.put("ArmHighConePlace", new SequentialCommandGroup(
-                    new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.2)),
-                    new ParallelCommandGroup(
-                      new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 117.5) &  (s_Arm.getEncoderActuate() < 118.5)),
-                      new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).withTimeout(2.2),
-                      new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),  
-                    new ParallelRaceGroup(
-                        new ArmHighHoldCommand(s_Arm),
-                        new ParallelRaceGroup(
-                            new HandOutConeCommand(s_Hand),
-                            new WaitCommand(.4)
-                        )
-                    )
-                   )
-                  );
-                  eventMap.put("ArmHighCubeRetract", new SequentialCommandGroup(
-                   // new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > -7.5) & (s_Arm.getEncoderActuate() < -2.5)),
-                    //new ArmStopCommand(s_Arm).withTimeout(.05),
-                    new ParallelCommandGroup(  
-                      new ArmPistonRetractCommand(s_Piston).withTimeout(1) ,
-                      new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 48.7) & (s_Extend.getEncoderExtend() >47.7))
-                    ),    
-            
-                    new ParallelCommandGroup(
-                      new SequentialCommandGroup(
-                        new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 33.9) & (s_Arm.getEncoderActuate() >33)),
-                        new ArmStopCommand(s_Arm).withTimeout(.1)),
-            
-                    new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true))
-                    ),
-                    new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() < .7)
-                   
-                     )
-                    );
-            
-            
-                    eventMap.put("ArmUp", new SequentialCommandGroup(
-                        new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5)),
-                       new ParallelRaceGroup(
-                        new ArmHighHoldCommand(s_Arm),
-                        new ArmExtendCommand(s_Extend).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))
-                   )
-                   //           new ArmStopCommand(s_Arm).withTimeout(.1)
-            
-                        )
-                       );
-            
-            
-                eventMap.put("ArmHighCube", new SequentialCommandGroup(
-                    //new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <=.7)),
-                    new HandStopCommand(s_Hand).withTimeout(.1),
-                    new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5)),
-                    new ParallelRaceGroup(
-                         new ArmHighHoldCommand(s_Arm),
-                         new ArmExtendCommand(s_Extend).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))
-                    ),
-                    new ParallelRaceGroup(
-                        new ArmHighHoldCommand(s_Arm),
-                        new ParallelRaceGroup(
-                                new HandOutCubeCommand(s_Hand),
-                                new WaitCommand(.4)      
-                        )
-                ),
-                new HandStopCommand(s_Hand).withTimeout(.1)));
 
+                eventMap.put("ArmHighConePlace", new SequentialCommandGroup(
+                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.2)),
+                                new ParallelCommandGroup(
+                                                new ArmHighCommand(s_Arm)
+                                                                .until(() -> (s_Arm.getEncoderActuate() > 117.5)
+                                                                                & (s_Arm.getEncoderActuate() < 118.5)),
+                                                new ArmPistonExtendCommand(s_Piston)
+                                                                .beforeStarting(new WaitUntilCommand(
+                                                                                () -> s_Arm.getEncoderActuate() > 60))
+                                                                .withTimeout(2.2),
+                                                new ArmExtendCommand(s_Extend)
+                                                                .beforeStarting(new WaitUntilCommand(
+                                                                                () -> s_Arm.getEncoderActuate() > 90))
+                                                                .until(() -> (s_Extend.getEncoderExtend() < 62)
+                                                                                & (s_Extend.getEncoderExtend() > 58))),
+                                new ParallelRaceGroup(
+                                                new ArmHighHoldCommand(s_Arm),
+                                                new ParallelRaceGroup(
+                                                                new HandOutConeCommand(s_Hand),
+                                                                new WaitCommand(.4)))));
+                eventMap.put("ArmHighCubeRetract", new SequentialCommandGroup(
+                                // new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > -7.5) &
+                                // (s_Arm.getEncoderActuate() < -2.5)),
+                                // new ArmStopCommand(s_Arm).withTimeout(.05),
+                                new ParallelCommandGroup(
+                                                new ArmPistonRetractCommand(s_Piston).withTimeout(1),
+                                                new ExtendToGroundCommand(s_Extend).until(
+                                                                () -> (s_Extend.getEncoderExtend() < 48.7) & (s_Extend
+                                                                                .getEncoderExtend() > 47.7))),
 
-                eventMap.put("GroundPickup",  new SequentialCommandGroup(
-                        new ParallelCommandGroup(  
-                            new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
-                            new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
-                            new HopperIn(s_Hopper).withTimeout(.05),
-                            new WaitCommand(.3)
-                        ),
-               new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 35.8) & (s_Arm.getEncoderActuate() >34.3)),
-               new ArmStopCommand(s_Arm).withTimeout(.1),
-               new ParallelCommandGroup(
-                new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 49) & (s_Extend.getEncoderExtend() >47.7)),
-                new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true))
-                ),
-               new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1),
-            //  new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
-               new HandInCubeCommand(s_Hand).withTimeout(.3),
-               new ArmStopCommand(s_Arm).withTimeout(.05)
+                                new ParallelCommandGroup(
+                                                new SequentialCommandGroup(
+                                                                new ArmToGroundCommand(s_Arm).until(() -> (s_Arm
+                                                                                .getEncoderActuate() < 33.9)
+                                                                                & (s_Arm.getEncoderActuate() > 33)),
+                                                                new ArmStopCommand(s_Arm).withTimeout(.1)),
+
+                                                new HandInCubeCommand(s_Hand)
+                                                                .until(() -> (s_Hand.getvoltageCube() == true))),
+                                new ArmRetractCommand(s_Extend).until(() -> s_Extend.getEncoderExtend() < .7)
 
                 ));
 
-                eventMap.put("ArmRetract", new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1));
-                
+                eventMap.put("ArmUp", new SequentialCommandGroup(
+                                new ArmHighCubeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > 104.5)
+                                                & (s_Arm.getEncoderActuate() < 106.5)),
+                                new ParallelRaceGroup(
+                                                new ArmHighHoldCommand(s_Arm),
+                                                new ArmExtendCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() < 62)
+                                                                                & (s_Extend.getEncoderExtend() > 58)))
+                // new ArmStopCommand(s_Arm).withTimeout(.1)
+
+                ));
+
+                eventMap.put("ArmHighCube", new SequentialCommandGroup(
+                                // new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend()
+                                // <=.7)),
+                                new HandStopCommand(s_Hand).withTimeout(.1),
+                                new ArmHighCubeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > 104.5)
+                                                & (s_Arm.getEncoderActuate() < 106.5)),
+                                new ParallelRaceGroup(
+                                                new ArmHighHoldCommand(s_Arm),
+                                                new ArmExtendCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() < 62)
+                                                                                & (s_Extend.getEncoderExtend() > 58))),
+                                new ParallelRaceGroup(
+                                                new ArmHighHoldCommand(s_Arm),
+                                                new ParallelRaceGroup(
+                                                                new HandOutCubeCommand(s_Hand),
+                                                                new WaitCommand(.4))),
+                                new HandStopCommand(s_Hand).withTimeout(.1)));
+
+                eventMap.put("GroundPickup", new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                                new ArmPistonRetractCommand(s_Piston).until(
+                                                                () -> (s_Piston.PistonArmExtended() == Value.kReverse)),
+                                                new ArmRetractCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                                                new HopperIn(s_Hopper).withTimeout(.05),
+                                                new WaitCommand(.3)),
+                                new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 35.8)
+                                                & (s_Arm.getEncoderActuate() > 34.3)),
+                                new ArmStopCommand(s_Arm).withTimeout(.1),
+                                new ParallelCommandGroup(
+                                                new ExtendToGroundCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() < 49)
+                                                                                & (s_Extend.getEncoderExtend() > 47.7)),
+                                                new HandInCubeCommand(s_Hand)
+                                                                .until(() -> (s_Hand.getvoltageCube() == true))),
+                                new ArmRetractCommand(s_Extend).until(() -> s_Extend.getEncoderExtend() <= 1),
+                                // new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1) &
+                                // (s_Arm.getEncoderActuate() > -1)),
+                                new HandInCubeCommand(s_Hand).withTimeout(.3),
+                                new ArmStopCommand(s_Arm).withTimeout(.05)
+
+                ));
+
+                eventMap.put("ArmRetract",
+                                new ArmRetractCommand(s_Extend).until(() -> s_Extend.getEncoderExtend() <= 1));
+
                 eventMap.put("CubePlace", new HandOutCubeCommand(s_Hand).withTimeout(.3));
 
                 eventMap.put("HopOut", new HopperOut(s_Hopper).withTimeout(.6));
 
                 eventMap.put("HopIn", new HopperIn(s_Hopper).withTimeout(.05));
 
-                
-       s_Swerve.setDefaultCommand(
-         new TeleopSwerve(
-               s_Swerve,
-                () -> -driver.getRawAxis(translationAxis),// * (Math.abs(-driver.getRawAxis(translationAxis))),
-                () -> -driver.getRawAxis(strafeAxis)  * (Math.abs(-driver.getRawAxis(strafeAxis))),
-                () -> -driver.getRawAxis(rotationAxis),                                                                                                                                                                                                                                                                                                
-                () -> c_5.getAsBoolean(),
-                () -> c_6.getAsBoolean(),
-                () ->c_10.getAsBoolean()));
-    
-       s_Extend.setDefaultCommand(new ExtendOverride(
-                s_Extend,
-                () ->   -driver.getRawAxis(3)));
+                s_Swerve.setDefaultCommand(
+                                new TeleopSwerve(
+                                                s_Swerve,
+                                                () -> -driver.getRawAxis(translationAxis), // *
+                                                                                           // (Math.abs(-driver.getRawAxis(translationAxis))),
+                                                () -> -driver.getRawAxis(strafeAxis)
+                                                                * (Math.abs(-driver.getRawAxis(strafeAxis))),
+                                                () -> -driver.getRawAxis(rotationAxis),
+                                                () -> c_5.getAsBoolean(),
+                                                () -> c_6.getAsBoolean(),
+                                                () -> c_10.getAsBoolean()));
 
-     //   s_Arm.setDefaultCommand(new ArmOverride(
-       //     s_Arm,
-         //       () ->   -driver.getRawAxis(1)));
+                s_Extend.setDefaultCommand(new ExtendOverride(
+                                s_Extend,
+                                () -> -driver.getRawAxis(3)));
 
-        m_chooser.setDefaultOption("Two Piece Top", new TwoBallTopAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
-         m_chooser.addOption("DoNothing", new DoNothingAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
-         m_chooser.addOption("PlaceAndBackUpHigh", new PlaceandBackUpAutoHigh(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
-         m_chooser.addOption("PlaceAndBackUplow", new PlaceAndBackUpAutoLow(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
-         m_chooser.addOption("ChargeStation", new ChargeStationAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
-         m_chooser.addOption("TestAuto", new TestAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
-         m_chooser.addOption("1.5 Piece, Then Charge, Top", new ChargeTopAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
-         m_chooser.addOption("Bottom 1.5 Piece", new BottomAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
-         m_chooser.addOption("3 Piece Top", new ThreePieceAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston, eventMap));
-         m_chooser.addOption("3 Piece Top Good", new ThreePieceAutoGood(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston, eventMap));
-         m_chooser.addOption("Bump Side", new BumpSideAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston, eventMap));
+                // s_Arm.setDefaultCommand(new ArmOverride(
+                // s_Arm,
+                // () -> -driver.getRawAxis(1)));
 
+                m_chooser.setDefaultOption("Two Piece Top",
+                                new TwoBallTopAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+                m_chooser.addOption("DoNothing",
+                                new DoNothingAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+                m_chooser.addOption("PlaceAndBackUpHigh",
+                                new PlaceandBackUpAutoHigh(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+                m_chooser.addOption("PlaceAndBackUplow",
+                                new PlaceAndBackUpAutoLow(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+                m_chooser.addOption("ChargeStation",
+                                new ChargeStationAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+                m_chooser.addOption("TestAuto", new TestAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+                m_chooser.addOption("1.5 Piece, Then Charge, Top",
+                                new ChargeTopAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+                m_chooser.addOption("Bottom 1.5 Piece",
+                                new BottomAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston));
+                m_chooser.addOption("3 Piece Top",
+                                new ThreePieceAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston, eventMap));
+                m_chooser.addOption("3 Piece Top Good", new ThreePieceAutoGood(s_Swerve, s_Arm, s_Hand, s_Extend,
+                                s_Hopper, s_Piston, eventMap));
+                m_chooser.addOption("Bump Side",
+                                new BumpSideAuto(s_Swerve, s_Arm, s_Hand, s_Extend, s_Hopper, s_Piston, eventMap));
 
-        // Put the chooser on the dashboard+
-        SmartDashboard.putData(m_chooser);
-        
+                // Put the chooser on the dashboard+
+                SmartDashboard.putData(m_chooser);
 
+                // Configure the button bindings
+                configureButtonBindings();
 
-        // Configure the button bindings
-        configureButtonBindings();
-    
-}
-
-    /**
-     * Use this method to define your button->command mappings. Buttons can be
-     * created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-     * it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
-        /* Driver Buttons */
-
-     //  c_4.onTrue(ToHomeCommand());
-
-    //    c_5.onTrue(new PistonArmOut(s_Piston));
-     //   c_6.onTrue(new ArmPistonRetractCommand(s_Piston));
-     //   c_7.onTrue(new HopperIn(s_Hopper));
-     //   c_8.onTrue(new HopperOut(s_Hopper));
-
-
-     //   c_6.whileTrue(new RunThemHandSlowly(s_Hand));
-      //c_8.onTrue(DropCube());
-     //c_1.onTrue(new InstantCommand(() -> s_Hopper.AlternateHopper()));
-        //c_1.onTrue(ToIntake());
-      //  c_2.onTrue(new );
-    //    c_1.onTrue(ToGround());
-
-
-        // c_7.onTrue(DropCone());
-
-        //c_ArmUp.onTrue(new ArmUpCommand(s_Arm));
-       // c_ArmRest.onTrue(new ArmUpCommand(s_Arm));
-      //  c_9.onTrue(new ArmExtendCommand(s_Extend));
-      //  c_10.onTrue(new ArmRetractCommand(s_Extend));
-      //  c_ArmPneumatic.onTrue(new ArmPnuematicsCommand(s_Arm));
-
-       // c_3.onTrue(new HandInConeCommand(s_Hand).until( () -> s_Hand.getvoltage()));
-     //   c_9.whileTrue(new HandOutConeCommand(s_Hand));  
-
-      //  c_3.onTrue(ToIntake());
-        //c_6.onTrue(ToGround());
-
-
-        c_3.onTrue(DropCone());
-      //  c_6.whileTrue( new ArmPistonExtendCommand(s_Piston));
-        c_8.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-        c_1.onTrue(DropCube());
-        c_4.onTrue(ToIntake());
-        c_2.onTrue(ToGround());
-     //   c_5.whileTrue(new ArmPistonRetractCommand(s_Piston));
-        c_10.whileTrue(new InstantCommand(() -> s_Extend.RetractButton()));
-        
-        c2_1.onTrue(HighArmCone());
-        c2_2.onTrue(HighArmCube());
-       // c2_2.onTrue(new HopperOut(s_Hopper));
-        c2_3.onTrue(new HopperIn(s_Hopper));
-        c2_4.onTrue(MidArmCone());
-        c2_5.onTrue(MidArmCube());
-        c2_6.onTrue(LowScore());
-        c2_7.whileTrue(new HandInConeCommand(s_Hand));
-        c2_8.whileTrue(new HandInCubeCommand(s_Hand));
-        c2_9.onTrue(ToHomeCubeCommand());
-        c2_10.onTrue(OhShitHome());
-
-
-        
-    }
-
-
-      public Command HighArmCone() {
-       return new SequentialCommandGroup(
-                  new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
-                 new ParallelCommandGroup(
-                  new ArmHighCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 117.5) &  (s_Arm.getEncoderActuate() < 118.5)),
-                  new ArmPistonExtendCommand(s_Piston).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 60)).withTimeout(2),
-                  new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),
-                new ArmHighHoldCommand(s_Arm)
-        
-       );
-                                 
-     }
-     public Command HighArmCube() {
-        return new SequentialCommandGroup(
-                   new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
-                   new ParallelRaceGroup(
-                        new SequentialCommandGroup(
-                                new ArmHighCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 104.5) &  (s_Arm.getEncoderActuate() < 106.5)),
-                                new ArmMiddleHoldCommand(s_Arm)
-                        ),
-                        new ArmExtendCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> ( s_Extend.getEncoderExtend() < 62) &  (s_Extend.getEncoderExtend() > 58))),
-                   new ArmMiddleHoldCommand(s_Arm)
-        );
-                                  
-      }
-
-     public Command MidArmCone() {
-       return new SequentialCommandGroup(
-                new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),  
-                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
-                new ParallelRaceGroup(
-                  new SequentialCommandGroup(      
-                  new ArmMiddleCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 109.5) &  (s_Arm.getEncoderActuate() < 110.5)),
-                  new ArmMiddleHoldCommand(s_Arm)
-                  ),
-                        new ArmExtendMidCommand(s_Extend).beforeStarting(new WaitUntilCommand(() -> s_Arm.getEncoderActuate() > 90)).until(() -> (s_Extend.getEncoderExtend() < 47) & (s_Extend.getEncoderExtend() > 43))
-                  ),
-                  new ArmMiddleHoldCommand(s_Arm)  
-                  );
-                       
-                  
-       
-     }
-     public Command MidArmCube() {
-        return new SequentialCommandGroup(
-                new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
-                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
-                new ArmMiddleCubeCommand(s_Arm).until(() ->(s_Arm.getEncoderActuate() > 89.8) &  (s_Arm.getEncoderActuate() < 90.2)),
-                new ArmMiddleCubeHoldCommand(s_Arm)
-                );
-                   
-        
-      }    
-     
-  
-     
-     
-     public Command OhShitHome() {
-        return new SequentialCommandGroup(
-                new InstantCommand(() -> s_Arm.Stop()).withTimeout(.1),
-                new HandStopCommand(s_Hand).withTimeout(.1),
-                new ParallelCommandGroup(
-                        new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
-                        new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1.5)),
-                new WaitCommand(.4),
-                new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
-                new ArmStopCommand(s_Arm).withTimeout(.1),
-                new HopperIn(s_Hopper).until(() -> (s_Hopper.IsHopOut() == Value.kReverse))
-        );
-     };
-
-     public Command ToHomeCubeCommand() {
-        return new SequentialCommandGroup(
-                //new InstantCommand(() -> s_Arm.Stop()).withTimeout(.1),
-                //new HandStopCommand(s_Hand).withTimeout(.1),
-                new ParallelCommandGroup(
-                        new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
-                        new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1.5)),
-                new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
-                new ArmStopCommand(s_Arm).withTimeout(.1)
-        );
-     };
-
-    public Command ToIntake() {
-     return new SequentialCommandGroup(
-                new ParallelCommandGroup(  
-                    new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
-                    new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1.5))
-                ),
-                new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
-                new HopperOut(s_Hopper).until (() -> (s_Hopper.HopperDown() == Value.kForward)),
-                new ParallelCommandGroup(
-                new ArmToHopperCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < -10.5) & (s_Arm.getEncoderActuate() > -11.5) ),
-                new HandInConeCommand(s_Hand).until(() ->  s_Hand.getvoltage())
-                ),
-                new ParallelRaceGroup(
-                new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1) &  (s_Arm.getEncoderActuate() > -1)),
-                new HandInConeCommand(s_Hand)
-                ),
-                new ArmStopCommand(s_Arm).withTimeout(.2),
-                new HopperIn(s_Hopper).until (() -> s_Hopper.HopperDown() == Value.kReverse),
-                new HandInConeCommand(s_Hand).withTimeout(.4)
-                );
         }
+
+        /**
+         * Use this method to define your button->command mappings. Buttons can be
+         * created by
+         * instantiating a {@link GenericHID} or one of its subclasses ({@link
+         * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+         * it to a {@link
+         * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+         */
+        private void configureButtonBindings() {
+                /* Driver Buttons */
+
+                c_3.onTrue(DropCone());
+                // c_6.whileTrue( new ArmPistonExtendCommand(s_Piston));
+                c_8.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+                c_1.onTrue(DropCube());
+                c_4.onTrue(ToIntake());
+                c_2.onTrue(ToGround());
+                // c_5.whileTrue(new ArmPistonRetractCommand(s_Piston));
+                c_10.whileTrue(new InstantCommand(() -> s_Extend.RetractButton()));
+
+                c2_1.onTrue(HighArmCone());
+                c2_2.onTrue(HighArmCube());
+                // c2_2.onTrue(new HopperOut(s_Hopper));
+                c2_3.onTrue(new HopperIn(s_Hopper));
+                c2_4.onTrue(MidArmCone());
+                c2_5.onTrue(MidArmCube());
+                c2_6.onTrue(LowScore());
+                c2_7.whileTrue(new HandInConeCommand(s_Hand));
+                c2_8.whileTrue(new HandInCubeCommand(s_Hand));
+                c2_9.onTrue(ToHomeCubeCommand());
+                c2_10.onTrue(OhShitHome());
+
+        }
+
+        public Command HighArmCone() {
+                return new SequentialCommandGroup(
+                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                                new ParallelCommandGroup(
+                                                new ArmHighCommand(s_Arm)
+                                                                .until(() -> (s_Arm.getEncoderActuate() > 117.5)
+                                                                                & (s_Arm.getEncoderActuate() < 118.5)),
+                                                new ArmPistonExtendCommand(s_Piston)
+                                                                .beforeStarting(new WaitUntilCommand(
+                                                                                () -> s_Arm.getEncoderActuate() > 60))
+                                                                .withTimeout(2),
+                                                new ArmExtendCommand(s_Extend)
+                                                                .beforeStarting(new WaitUntilCommand(
+                                                                                () -> s_Arm.getEncoderActuate() > 90))
+                                                                .until(() -> (s_Extend.getEncoderExtend() < 62)
+                                                                                & (s_Extend.getEncoderExtend() > 58))),
+                                new ArmHighHoldCommand(s_Arm)
+
+                );
+
+        }
+
+        public Command HighArmCube() {
+                return new SequentialCommandGroup(
+                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                                new ParallelRaceGroup(
+                                                new SequentialCommandGroup(
+                                                                new ArmHighCubeCommand(s_Arm).until(() -> (s_Arm
+                                                                                .getEncoderActuate() > 104.5)
+                                                                                & (s_Arm.getEncoderActuate() < 106.5)),
+                                                                new ArmMiddleHoldCommand(s_Arm)),
+                                                new ArmExtendCommand(s_Extend)
+                                                                .beforeStarting(new WaitUntilCommand(
+                                                                                () -> s_Arm.getEncoderActuate() > 90))
+                                                                .until(() -> (s_Extend.getEncoderExtend() < 62)
+                                                                                & (s_Extend.getEncoderExtend() > 58))),
+                                new ArmMiddleHoldCommand(s_Arm));
+
+        }
+
+        public Command MidArmCone() {
+                return new SequentialCommandGroup(
+                                new ArmPistonRetractCommand(s_Piston)
+                                                .until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
+                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                                new ParallelRaceGroup(
+                                                new SequentialCommandGroup(
+                                                                new ArmMiddleCommand(s_Arm).until(() -> (s_Arm
+                                                                                .getEncoderActuate() > 109.5)
+                                                                                & (s_Arm.getEncoderActuate() < 110.5)),
+                                                                new ArmMiddleHoldCommand(s_Arm)),
+                                                new ArmExtendMidCommand(s_Extend)
+                                                                .beforeStarting(new WaitUntilCommand(
+                                                                                () -> s_Arm.getEncoderActuate() > 90))
+                                                                .until(() -> (s_Extend.getEncoderExtend() < 47)
+                                                                                & (s_Extend.getEncoderExtend() > 43))),
+                                new ArmMiddleHoldCommand(s_Arm));
+
+        }
+
+        public Command MidArmCube() {
+                return new SequentialCommandGroup(
+                                new ArmPistonRetractCommand(s_Piston)
+                                                .until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)),
+                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5)),
+                                new ArmMiddleCubeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() > 89.8)
+                                                & (s_Arm.getEncoderActuate() < 90.2)),
+                                new ArmMiddleCubeHoldCommand(s_Arm));
+
+        }
+
+        public Command OhShitHome() {
+                return new SequentialCommandGroup(
+                                new InstantCommand(() -> s_Arm.Stop()).withTimeout(.1),
+                                new HandStopCommand(s_Hand).withTimeout(.1),
+                                new ParallelCommandGroup(
+                                                new ArmPistonRetractCommand(s_Piston).until(
+                                                                () -> (s_Piston.PistonArmExtended() == Value.kReverse)),
+                                                new ArmRetractCommand(s_Extend)
+                                                                .until(() -> s_Extend.getEncoderExtend() <= 1.5)),
+                                new WaitCommand(.4),
+                                new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1)
+                                                & (s_Arm.getEncoderActuate() > -1)),
+                                new ArmStopCommand(s_Arm).withTimeout(.1),
+                                new HopperIn(s_Hopper).until(() -> (s_Hopper.IsHopOut() == Value.kReverse)));
+        };
+
+        public Command ToHomeCubeCommand() {
+                return new SequentialCommandGroup(
+                                // new InstantCommand(() -> s_Arm.Stop()).withTimeout(.1),
+                                // new HandStopCommand(s_Hand).withTimeout(.1),
+                                new ParallelCommandGroup(
+                                                new ArmPistonRetractCommand(s_Piston).until(
+                                                                () -> (s_Piston.PistonArmExtended() == Value.kReverse)),
+                                                new ArmRetractCommand(s_Extend)
+                                                                .until(() -> s_Extend.getEncoderExtend() <= 1.5)),
+                                new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1)
+                                                & (s_Arm.getEncoderActuate() > -1)),
+                                new ArmStopCommand(s_Arm).withTimeout(.1));
+        };
+
+        public Command ToIntake() {
+                return new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                                new ArmPistonRetractCommand(s_Piston).until(
+                                                                () -> (s_Piston.PistonArmExtended() == Value.kReverse)),
+                                                new ArmRetractCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() <= 1.5))),
+                                new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1)
+                                                & (s_Arm.getEncoderActuate() > -1)),
+                                new HopperOut(s_Hopper).until(() -> (s_Hopper.HopperDown() == Value.kForward)),
+                                new ParallelCommandGroup(
+                                                new ArmToHopperCommand(s_Arm)
+                                                                .until(() -> (s_Arm.getEncoderActuate() < -10.5)
+                                                                                & (s_Arm.getEncoderActuate() > -11.5)),
+                                                new HandInConeCommand(s_Hand).until(() -> s_Hand.getvoltage())),
+                                new ParallelRaceGroup(
+                                                new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1)
+                                                                & (s_Arm.getEncoderActuate() > -1)),
+                                                new HandInConeCommand(s_Hand)),
+                                new ArmStopCommand(s_Arm).withTimeout(.2),
+                                new HopperIn(s_Hopper).until(() -> s_Hopper.HopperDown() == Value.kReverse),
+                                new HandInConeCommand(s_Hand).withTimeout(.4));
+        }
+
         public Command ToGround() {
                 return new SequentialCommandGroup(
-                                new ParallelCommandGroup(  
-                                    new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
-                                    new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1.5))
-                                ),
-                       new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 33.9) & (s_Arm.getEncoderActuate() >33)),
-                       new ArmStopCommand(s_Arm).withTimeout(.1),
-                       new ParallelCommandGroup(
-                        new ExtendToGroundCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() < 49) & (s_Extend.getEncoderExtend() >47.7)),
-                        new HandInCubeCommand(s_Hand).until(() -> (s_Hand.getvoltageCube() == true))
-                        ),
-                       new ArmRetractCommand(s_Extend).until (() -> s_Extend.getEncoderExtend() <= 1.5),
-                       new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
-                       new HandInCubeCommand(s_Hand).withTimeout(.3),
-                       new ArmStopCommand(s_Arm).withTimeout(.05)
+                                new ParallelCommandGroup(
+                                                new ArmPistonRetractCommand(s_Piston).until(
+                                                                () -> (s_Piston.PistonArmExtended() == Value.kReverse)),
+                                                new ArmRetractCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() <= 1.5))),
+                                new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 33.9)
+                                                & (s_Arm.getEncoderActuate() > 33)),
+                                new ArmStopCommand(s_Arm).withTimeout(.1),
+                                new ParallelCommandGroup(
+                                                new ExtendToGroundCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() < 49)
+                                                                                & (s_Extend.getEncoderExtend() > 47.7)),
+                                                new HandInCubeCommand(s_Hand)
+                                                                .until(() -> (s_Hand.getvoltageCube() == true))),
+                                new ArmRetractCommand(s_Extend).until(() -> s_Extend.getEncoderExtend() <= 1.5),
+                                new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1)
+                                                & (s_Arm.getEncoderActuate() > -1)),
+                                new HandInCubeCommand(s_Hand).withTimeout(.3),
+                                new ArmStopCommand(s_Arm).withTimeout(.05)
 
                 );
-                
+
         }
 
         public Command LowScore() {
-          return new SequentialCommandGroup(
-                          new ParallelCommandGroup(  
-                              new ArmPistonRetractCommand(s_Piston).until(() -> (s_Piston.PistonArmExtended() == Value.kReverse)) ,
-                              new ArmRetractCommand(s_Extend).until (() -> (s_Extend.getEncoderExtend() <= 1.5))
-                          ),
-                 new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.5) & (s_Arm.getEncoderActuate() > 33.4)),
-                 new ArmStopCommand(s_Arm).withTimeout(.1)
-          );
+                return new SequentialCommandGroup(
+                                new ParallelCommandGroup(
+                                                new ArmPistonRetractCommand(s_Piston).until(
+                                                                () -> (s_Piston.PistonArmExtended() == Value.kReverse)),
+                                                new ArmRetractCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() <= 1.5))),
+                                new ArmToGroundCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 34.5)
+                                                & (s_Arm.getEncoderActuate() > 33.4)),
+                                new ArmStopCommand(s_Arm).withTimeout(.1));
         }
+
         public Command DropCube() {
                 return new SequentialCommandGroup(
-                        new ParallelRaceGroup(
-                                new ArmHighHoldCommand(s_Arm),
                                 new ParallelRaceGroup(
-                                        new HandOutCubeCommand(s_Hand),
-                                        new WaitCommand(1)      
-                                )
-                        ),
-                        new ArmStopCommand(s_Arm).withTimeout(.01),
-                        new HandStopCommand(s_Hand).withTimeout(.2),
-                        new ParallelRaceGroup(
-                                new ArmPistonRetractCommand(s_Piston).withTimeout(1.5),
-                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5))
-                        ),
-                        new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
-                        new ArmStopCommand(s_Arm)
-          
-                    //    new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() > -7.5) & (s_Arm.getEncoderActuate() < -2.5)),
-                     //   new ArmStopCommand(s_Arm)
-                        );
+                                                new ArmHighHoldCommand(s_Arm),
+                                                new ParallelRaceGroup(
+                                                                new HandOutCubeCommand(s_Hand),
+                                                                new WaitCommand(1))),
+                                new ArmStopCommand(s_Arm).withTimeout(.01),
+                                new HandStopCommand(s_Hand).withTimeout(.2),
+                                new ParallelRaceGroup(
+                                                new ArmPistonRetractCommand(s_Piston).withTimeout(1.5),
+                                                new ArmRetractCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() <= 1.5))),
+                                new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1)
+                                                & (s_Arm.getEncoderActuate() > -1)),
+                                new ArmStopCommand(s_Arm)
+
+                // new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() > -7.5) &
+                // (s_Arm.getEncoderActuate() < -2.5)),
+                // new ArmStopCommand(s_Arm)
+                );
         }
+
         public Command DropCone() {
                 return new SequentialCommandGroup(
-                        new ParallelRaceGroup(
-                                new ArmHighHoldCommand(s_Arm),
-                        new ParallelRaceGroup(        
-                                new HandOutConeCommand(s_Hand),
-                                new WaitCommand(1)      
-                        )),
-                        new ParallelCommandGroup(
-                                new ArmPistonRetractCommand(s_Piston).withTimeout(.4),
-                                new ArmRetractCommand(s_Extend).until(() -> (s_Extend.getEncoderExtend() <= 1.5))
-                        ),
-                        
-          
-                        new ArmToHomeCommand(s_Arm).until (() -> (s_Arm.getEncoderActuate() < 1) & (s_Arm.getEncoderActuate() > -1)),
-                        new ArmStopCommand(s_Arm)
-                        );
+                                new ParallelRaceGroup(
+                                                new ArmHighHoldCommand(s_Arm),
+                                                new ParallelRaceGroup(
+                                                                new HandOutConeCommand(s_Hand),
+                                                                new WaitCommand(1))),
+                                new ParallelCommandGroup(
+                                                new ArmPistonRetractCommand(s_Piston).withTimeout(.4),
+                                                new ArmRetractCommand(s_Extend)
+                                                                .until(() -> (s_Extend.getEncoderExtend() <= 1.5))),
+
+                                new ArmToHomeCommand(s_Arm).until(() -> (s_Arm.getEncoderActuate() < 1)
+                                                & (s_Arm.getEncoderActuate() > -1)),
+                                new ArmStopCommand(s_Arm));
         }
-        
 
-    public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-      return m_chooser.getSelected();
- //return AutoTest();
-    }
+        public Command getAutonomousCommand() {
+                // An ExampleCommand will run in autonomous
+                return m_chooser.getSelected();
+                // return AutoTest();
+        }
 
+        Command AutoTest() {
+                TrajectoryConfig config = new TrajectoryConfig(
+                                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                                .setKinematics(Constants.Swerve.swerveKinematics);
 
+                var interiorQuinticWaypoints = new ArrayList<Pose2d>();
+                interiorQuinticWaypoints.add(new Pose2d(0, 0, new Rotation2d(0)));
+                // interiorQuinticWaypoints.add(new Pose2d(1, 1, new Rotation2d(0)));
+                // interiorQuinticWaypoints.add(new Pose2d(Units.feetToMeters(0),
+                // Units.feetToMeters(0), new Rotation2d(90)));
+                interiorQuinticWaypoints.add(new Pose2d(1, 0, new Rotation2d(0)));
+                // interiorQuinticWaypoints.add(new Pose2d(1, 0,new Rotation2d(0)));
+                // An example trajectory to follow. All units in meters.
 
-    Command AutoTest() {
-        TrajectoryConfig config = new TrajectoryConfig(
-                Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                .setKinematics(Constants.Swerve.swerveKinematics);
+                // * Trajectory exampleTrajectory =
+                // * TrajectoryGenerator.generateTrajectory(
+                // * // Start at the origin facing the +X direction
+                // * new Pose2d(0, 0, new Rotation2d(0)),
+                // * // Pass through these two interior waypoints, making an 's' curve path
+                // * List.of(new Translation2d(.5, .5), new Translation2d(1, 1)),
+                // * // End 3 meters straight ahead of where we started, facing forward
+                // * new Pose2d(2, 0, new Rotation2d(0)),
+                // * config);
+                Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
+                                interiorQuinticWaypoints,
+                                config);
 
-       
+                var thetaController = new ProfiledPIDController(
+                                1, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+                thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-        var interiorQuinticWaypoints = new ArrayList<Pose2d>();
-        interiorQuinticWaypoints.add(new Pose2d(0, 0, new Rotation2d(0)));
-       // interiorQuinticWaypoints.add(new Pose2d(1, 1, new Rotation2d(0)));
-        // interiorQuinticWaypoints.add(new Pose2d(Units.feetToMeters(0),
-        // Units.feetToMeters(0), new Rotation2d(90)));
-        interiorQuinticWaypoints.add(new Pose2d(1, 0, new Rotation2d(0)));
-        // interiorQuinticWaypoints.add(new Pose2d(1, 0,new Rotation2d(0)));
-        // An example trajectory to follow. All units in meters.
-        
-      //   * Trajectory exampleTrajectory =
-      //   * TrajectoryGenerator.generateTrajectory(
-      //   * // Start at the origin facing the +X direction
-      //   * new Pose2d(0, 0, new Rotation2d(0)),
-      //   * // Pass through these two interior waypoints, making an 's' curve path
-       //  * List.of(new Translation2d(.5, .5), new Translation2d(1, 1)),
-      //   * // End 3 meters straight ahead of where we started, facing forward
-      //   * new Pose2d(2, 0, new Rotation2d(0)),
-        // * config);
-          Trajectory exampleTrajectory =
-          TrajectoryGenerator.generateTrajectory(
-           interiorQuinticWaypoints,
-           config);
-         
-        var thetaController = new ProfiledPIDController(
-                1, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+                SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
+                                exampleTrajectory,
+                                s_Swerve::getPose,
+                                Constants.Swerve.swerveKinematics, // SwerveDriveKinematics,
+                                new PIDController(12, 0, 0.5),
+                                new PIDController(12, 0, 0.5),
+                                thetaController,
+                                s_Swerve::setModuleStates,
+                                s_Swerve);
 
-        SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-                exampleTrajectory,
-                s_Swerve::getPose,
-                Constants.Swerve.swerveKinematics, // SwerveDriveKinematics,
-                new PIDController(12, 0, 0.5),
-                new PIDController(12, 0, 0.5),
-                thetaController,
-                s_Swerve::setModuleStates,
-                s_Swerve);
+                return new SequentialCommandGroup(
 
-        return new SequentialCommandGroup(
-
-                new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-                swerveControllerCommand);
-    }
+                                new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
+                                swerveControllerCommand);
+        }
 
 }
